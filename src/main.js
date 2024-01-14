@@ -1,16 +1,21 @@
+// ================================імпорт рендер фенкції
 import { render } from './js/render';
+// ================================імпорт бібліотеки для відкриття модалки
 import SimpleLightbox from 'simplelightbox';
-// Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
+// ================================імпорт бібліотеки для виведення помилок
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+// ================================імпорт бібліотеки AXIOS
 import axios from 'axios';
 
-const API_KEY = '41690622-1f4c10e5fb0aefa04cb32f231';
+// ================================пошук елементів на сторінці
 const listRender = document.querySelector('.photo-list');
 const formEl = document.querySelector('.form');
 const loader = document.querySelector('.loader');
 const gallery = new SimpleLightbox('.photo-list a');
+// ================================API ключ
+const API_KEY = '41690622-1f4c10e5fb0aefa04cb32f231';
 
 const formSubmit = e => {
   e.preventDefault();
@@ -20,13 +25,13 @@ const formSubmit = e => {
   loader.style.display = 'inline-block';
 
   axios.defaults.baseURL = 'https://pixabay.com/api/';
-  axios.defaults.params = {
+  const params = URLSearchParams({
     key: API_KEY,
     image_type: 'photo',
     q: formEl.search.value,
     orientation: 'horizontal',
     safesearch: true,
-  };
+  });
 
   const searchImages = async () => {
     const response = await axios.get();
