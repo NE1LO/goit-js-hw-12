@@ -7,9 +7,28 @@
     <title>Vanilla App Template</title>
     
     <script type="module" crossorigin src="/vanilla-app-template/commonHelpers.js"></script>
-    <link rel="stylesheet" href="/vanilla-app-template/assets/index-c9db6b34.css">
+    <link rel="modulepreload" crossorigin href="/vanilla-app-template/assets/vendor-c145bea9.js">
+    <link rel="stylesheet" href="/vanilla-app-template/assets/vendor-fd638ea2.css">
+    <link rel="stylesheet" href="/vanilla-app-template/assets/index-3552059a.css">
   </head>
   <body>
+    <div class="block-form">
+      <form class="form">
+        <input
+          class="input-img"
+          name="search"
+          type="text"
+          placeholder="Search images..."
+        />
+        <button class="btn-search" type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="block-photo">
+      <span class="loader"></span>
+      <ul class="photo-list"></ul>
+    </div>
+    
     
   </body>
 </html>
