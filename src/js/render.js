@@ -1,4 +1,4 @@
-const render = arr => {
+const render = (arr = []) => {
   let renderHtml;
   renderHtml = arr.reduce(
     (HTML, item) =>

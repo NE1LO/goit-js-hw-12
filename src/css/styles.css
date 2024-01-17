@@ -63,6 +63,19 @@ ul {
   animation: animBtn 1s ease 0s infinite normal forwards;
 }
 
+.btn-more {
+  cursor: pointer;
+  display: inline-flex;
+  padding: 8px 28px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  background: #4e75ff;
+  color: #fff;
+}
+
 /* photo */
 
 .photo-list {
