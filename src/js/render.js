@@ -1,4 +1,6 @@
-const render = (arr = []) => {
+const listRender = document.querySelector('.photo-list');
+
+const render = arr => {
   let renderHtml;
   renderHtml = arr.reduce(
     (HTML, item) =>
@@ -34,7 +36,7 @@ const render = (arr = []) => {
     ''
   );
 
-  return renderHtml;
+  listRender.insertAdjacentHTML('beforeend', renderHtml);
 };
 
 export { render };

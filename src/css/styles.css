@@ -64,9 +64,11 @@ ul {
 }
 
 .btn-more {
+  margin: 30px;
   cursor: pointer;
   display: inline-flex;
-  padding: 8px 28px;
+  height: 25px;
+  width: 550px;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -95,12 +97,13 @@ ul {
 }
 
 .photo-list__block {
+  padding: 20px 0;
   width: 100%;
   display: flex;
   justify-content: center;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   background-color: rgba(128, 128, 128, 0.942);
 }
 
