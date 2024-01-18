@@ -14,14 +14,9 @@ const loader = document.querySelector('.loader');
 const btnMoreEl = document.querySelector('.btn-more');
 const gallery = new SimpleLightbox('.photo-list a');
 // ==========================================================
-btnMoreEl.style.display = 'none';
-let sendFetch = null;
 
 formEl.addEventListener('submit', async event => {
   event.preventDefault();
-  if (sendFetch !== null) {
-    btnMoreEl.removeEventListener('click', sendFetch);
-  }
 
   listRender.innerHTML = '';
   const searchTerm = formEl.search.value.trim();
@@ -34,7 +29,7 @@ formEl.addEventListener('submit', async event => {
   }
   const fetchPhoto = createPageReguest(searchTerm);
 
-  sendFetch = async () => {
+  const sendFetch = async () => {
     loader.style.display = 'flex';
     const photoResponse = await fetchPhoto();
     if (photoResponse.length == 0) {
@@ -50,6 +45,13 @@ formEl.addEventListener('submit', async event => {
       loader.style.display = 'none';
       render(photoResponse);
       gallery.refresh();
+      if (btnMoreEl.style.display === 'flex') {
+        const lastItem = listRender.lastElementChild;
+        window.scrollBy({
+          top: 850,
+          behavior: 'smooth',
+        });
+      }
       btnMoreEl.style.display = 'flex';
     }
   };

@@ -45,6 +45,7 @@ ul {
 }
 
 .btn-search {
+  font-family: Montserrat;
   cursor: pointer;
   display: inline-flex;
   padding: 8px 16px;
@@ -64,11 +65,13 @@ ul {
 }
 
 .btn-more {
+  font-weight: 700;
+  font-family: Montserrat;
   margin: 30px;
   cursor: pointer;
-  display: inline-flex;
+  display: none;
   height: 25px;
-  width: 550px;
+  width: 150px;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -76,6 +79,13 @@ ul {
   border: 1px solid gray;
   background: #4e75ff;
   color: #fff;
+  transition: 0.3s;
+}
+
+.btn-more:hover {
+  background-color: #fff;
+  color: #4e75ff;
+  animation: ShakeRotate 2s ease 0s infinite normal forwards;
 }
 
 /* photo */
@@ -169,5 +179,37 @@ ul {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes ShakeRotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+  }
+
+  10% {
+    transform: rotate(2deg);
+  }
+
+  20%,
+  40%,
+  60% {
+    transform: rotate(-3deg);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: rotate(3deg);
+  }
+
+  80% {
+    transform: rotate(-2deg);
+  }
+
+  90% {
+    transform: rotate(2deg);
   }
 }

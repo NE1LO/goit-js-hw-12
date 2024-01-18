@@ -37,6 +37,8 @@ const render = arr => {
   );
 
   listRender.insertAdjacentHTML('beforeend', renderHtml);
+
+  const lastItem = listRender.lastElementChild;
 };
 
 export { render };
