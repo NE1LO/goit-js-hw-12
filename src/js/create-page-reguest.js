@@ -1,6 +1,7 @@
 import axios from 'axios';
 import iziToast from 'izitoast';
 const btnMoreEl = document.querySelector('.btn-more');
+const loader = document.querySelector('.loader');
 
 const instance = axios.create({
   baseURL: 'https://pixabay.com/api/',
@@ -30,24 +31,20 @@ const getPhoto = async ({ page, perPage, q }) => {
 };
 
 const createPageReguest = q => {
-  let isLastPhoto = false;
   let page = 1;
   const perPage = 40;
   return async () => {
     try {
-      console.log(isLastPhoto);
-      if (isLastPhoto) {
+      const { hits, total } = await getPhoto({ page, perPage, q });
+      // перевірка на останнє фото
+      if (page >= Math.ceil(total / perPage)) {
         iziToast.error({
           message: "We're sorry, but you've reached the end of search results.",
           position: 'topRight',
         });
         btnMoreEl.style.display = 'none';
-        return [];
-      }
-      const { hits, total } = await getPhoto({ page, perPage, q });
-      // перевірка на останнє фото
-      if (page >= Math.ceil(total / perPage)) {
-        isLastPhoto = true;
+        loader.style.display = 'none';
+        return;
       }
       page++;
       return hits;

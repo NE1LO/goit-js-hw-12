@@ -25,18 +25,19 @@ formEl.addEventListener('submit', async event => {
 
   listRender.innerHTML = '';
   const searchTerm = formEl.search.value.trim();
-  if (searchTerm.length == 0) {
+  if (searchTerm === '') {
     iziToast.error({
       message: 'you need to write the text',
       position: 'topRight',
     });
+    return;
   }
   const fetchPhoto = createPageReguest(searchTerm);
 
   sendFetch = async () => {
     loader.style.display = 'flex';
     const photoResponse = await fetchPhoto();
-    if (photoResponse.length < 1) {
+    if (photoResponse.length == 0) {
       iziToast.error({
         message: "Sorry we can't find this photo",
         position: 'topRight',
@@ -44,6 +45,7 @@ formEl.addEventListener('submit', async event => {
       btnMoreEl.style.display = 'none';
       loader.style.display = 'none';
       formEl.search.value = '';
+      return;
     } else {
       loader.style.display = 'none';
       render(photoResponse);
