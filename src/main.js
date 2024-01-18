@@ -24,7 +24,13 @@ formEl.addEventListener('submit', async event => {
   }
 
   listRender.innerHTML = '';
-  const searchTerm = formEl.search.value;
+  const searchTerm = formEl.search.value.trim();
+  if (searchTerm.length == 0) {
+    iziToast.error({
+      message: 'you need to write the text',
+      position: 'topRight',
+    });
+  }
   const fetchPhoto = createPageReguest(searchTerm);
 
   sendFetch = async () => {

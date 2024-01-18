@@ -1,7 +1,6 @@
 import axios from 'axios';
 import iziToast from 'izitoast';
 const btnMoreEl = document.querySelector('.btn-more');
-const loader = document.querySelector('.loader');
 
 const instance = axios.create({
   baseURL: 'https://pixabay.com/api/',
