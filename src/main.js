@@ -1,9 +1,7 @@
 import axios from 'axios';
-
 // ================================імпорт рендер функції
-// import { createPageReguest } from './js/create-page-reguest';
 import { render } from './js/render';
-// ================================імпорт бібліотеки для відкриття модалки
+// ================================імпорт бібліотеки стилів
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
@@ -56,17 +54,21 @@ formEl.addEventListener('submit', async event => {
     });
     return;
   }
-
+  loader.style.display = 'flex';
   const renderPhoto = await getPhoto(params);
+
   if (renderPhoto.hits.length == 0) {
     iziToast.error({
       message: "Sorry we can't find this photo",
       position: 'topRight',
     });
+    loader.style.display = 'none';
+    btnMoreEl.style.display = 'none';
     return;
   } else {
     render(renderPhoto.hits);
     gallery.refresh();
+    loader.style.display = 'none';
     btnMoreEl.style.display = 'flex';
   }
 });
@@ -81,6 +83,7 @@ btnMoreEl.addEventListener('click', async event => {
       position: 'topRight',
     });
     btnMoreEl.style.display = 'none';
+
     return;
   } else {
     render(renderMorePhoto.hits);
