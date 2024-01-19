@@ -1,10 +1,11 @@
+import axios from 'axios';
+
 // ================================імпорт рендер функції
-import { createPageReguest } from './js/create-page-reguest';
+// import { createPageReguest } from './js/create-page-reguest';
 import { render } from './js/render';
 // ================================імпорт бібліотеки для відкриття модалки
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// ================================імпорт бібліотеки iziToast
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 // ================================пошук елементів на сторінці
@@ -15,48 +16,82 @@ const btnMoreEl = document.querySelector('.btn-more');
 const gallery = new SimpleLightbox('.photo-list a');
 // ==========================================================
 
+const instance = axios.create({
+  baseURL: 'https://pixabay.com/api/',
+  params: {
+    key: '41690622-1f4c10e5fb0aefa04cb32f231',
+    'Content-Type': 'application/json',
+    image_type: 'photo',
+    orientation: 'horizontal',
+    safesearch: true,
+  },
+});
+
+const getPhoto = async params => {
+  try {
+    const response = await instance.get('', { params });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const params = {
+  page: 1,
+  per_page: 20,
+  q: '',
+};
+
+// ===========================================================
+
 formEl.addEventListener('submit', async event => {
   event.preventDefault();
-
   listRender.innerHTML = '';
-  const searchTerm = formEl.search.value.trim();
-  if (searchTerm === '') {
+  params.q = formEl.search.value.trim();
+
+  if (params.q === '') {
     iziToast.error({
       message: 'you need to write the text',
       position: 'topRight',
     });
     return;
   }
-  const fetchPhoto = createPageReguest(searchTerm);
 
-  const sendFetch = async () => {
-    loader.style.display = 'flex';
-    const photoResponse = await fetchPhoto();
-    if (photoResponse.length == 0) {
-      iziToast.error({
-        message: "Sorry we can't find this photo",
-        position: 'topRight',
-      });
-      btnMoreEl.style.display = 'none';
-      loader.style.display = 'none';
-      formEl.search.value = '';
-      return;
-    } else {
-      loader.style.display = 'none';
-      render(photoResponse);
-      gallery.refresh();
-      if (btnMoreEl.style.display === 'flex') {
-        const lastItem = listRender.lastElementChild;
-        window.scrollBy({
-          top: 850,
-          behavior: 'smooth',
-        });
-      }
-      btnMoreEl.style.display = 'flex';
-    }
-  };
+  const renderPhoto = await getPhoto(params);
+  if (renderPhoto.hits.length == 0) {
+    iziToast.error({
+      message: "Sorry we can't find this photo",
+      position: 'topRight',
+    });
+    return;
+  } else {
+    render(renderPhoto.hits);
+    gallery.refresh();
+    btnMoreEl.style.display = 'flex';
+  }
+});
 
-  await sendFetch();
+btnMoreEl.addEventListener('click', async event => {
+  event.preventDefault();
+  params.page++;
+  const renderMorePhoto = await getPhoto(params);
+  if (params.page >= Math.ceil(renderMorePhoto.totalHits / params.per_page)) {
+    iziToast.error({
+      message: "We're sorry, but you've reached the end of search results.",
+      position: 'topRight',
+    });
+    btnMoreEl.style.display = 'none';
+    return;
+  } else {
+    render(renderMorePhoto.hits);
+    window.scrollBy({
+      top:
+        3 *
+        document.querySelector('.photo-list__item').getBoundingClientRect()
+          .height,
+      behavior: 'smooth',
+    });
 
-  btnMoreEl.addEventListener('click', sendFetch);
+    gallery.refresh();
+  }
 });
