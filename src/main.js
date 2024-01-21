@@ -45,6 +45,7 @@ const params = {
 formEl.addEventListener('submit', async event => {
   event.preventDefault();
   listRender.innerHTML = '';
+  params.page = 1;
   params.q = formEl.search.value.trim();
 
   if (params.q === '') {
@@ -77,7 +78,7 @@ btnMoreEl.addEventListener('click', async event => {
   event.preventDefault();
   params.page++;
   const renderMorePhoto = await getPhoto(params);
-  if (params.page >= Math.ceil(renderMorePhoto.totalHits / params.per_page)) {
+  if (renderMorePhoto.hits.length < params.per_page) {
     iziToast.error({
       message: "We're sorry, but you've reached the end of search results.",
       position: 'topRight',
