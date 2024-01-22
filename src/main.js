@@ -36,7 +36,7 @@ const getPhoto = async params => {
 
 const params = {
   page: 1,
-  per_page: 20,
+  per_page: 40,
   q: '',
 };
 
@@ -58,7 +58,7 @@ formEl.addEventListener('submit', async event => {
   loader.style.display = 'flex';
   const renderPhoto = await getPhoto(params);
 
-  if (renderPhoto.hits.length == 0) {
+  if (renderPhoto.hits.length === 0) {
     iziToast.error({
       message: "Sorry we can't find this photo",
       position: 'topRight',
@@ -66,11 +66,19 @@ formEl.addEventListener('submit', async event => {
     loader.style.display = 'none';
     btnMoreEl.style.display = 'none';
     return;
-  } else {
-    render(renderPhoto.hits);
-    gallery.refresh();
+  }
+  render(renderPhoto.hits);
+  gallery.refresh();
+  loader.style.display = 'none';
+  btnMoreEl.style.display = 'flex';
+
+  if (params.page === Math.ceil(renderPhoto.totalHits / params.per_page)) {
+    iziToast.error({
+      message: "We're sorry, but you've reached the end of search results.",
+      position: 'topRight',
+    });
+    btnMoreEl.style.display = 'none';
     loader.style.display = 'none';
-    btnMoreEl.style.display = 'flex';
   }
 });
 
@@ -78,7 +86,18 @@ btnMoreEl.addEventListener('click', async event => {
   event.preventDefault();
   params.page++;
   const renderMorePhoto = await getPhoto(params);
-  if (renderMorePhoto.hits.length < params.per_page) {
+  console.log(renderMorePhoto);
+  render(renderMorePhoto.hits);
+  window.scrollBy({
+    top:
+      3 *
+      document.querySelector('.photo-list__item').getBoundingClientRect()
+        .height,
+    behavior: 'smooth',
+  });
+  gallery.refresh();
+
+  if (params.page === Math.ceil(renderMorePhoto.totalHits / params.per_page)) {
     iziToast.error({
       message: "We're sorry, but you've reached the end of search results.",
       position: 'topRight',
@@ -86,16 +105,5 @@ btnMoreEl.addEventListener('click', async event => {
     btnMoreEl.style.display = 'none';
 
     return;
-  } else {
-    render(renderMorePhoto.hits);
-    window.scrollBy({
-      top:
-        3 *
-        document.querySelector('.photo-list__item').getBoundingClientRect()
-          .height,
-      behavior: 'smooth',
-    });
-
-    gallery.refresh();
   }
 });
