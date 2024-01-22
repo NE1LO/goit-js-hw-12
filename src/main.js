@@ -30,7 +30,10 @@ const getPhoto = async params => {
     const response = await instance.get('', { params });
     return response.data;
   } catch (error) {
-    console.log(error);
+    iziToast.error({
+      message: 'error server',
+      position: 'topRight',
+    });
   }
 };
 
