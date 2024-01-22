@@ -45,6 +45,7 @@ const params = {
 formEl.addEventListener('submit', async event => {
   event.preventDefault();
   listRender.innerHTML = '';
+  btnMoreEl.style.display = 'none';
   params.page = 1;
   params.q = formEl.search.value.trim();
 
